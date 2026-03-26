@@ -11,7 +11,7 @@ root.maxsize(1000, 1000)
 root.geometry("600x600+50+50")
 
 # Canvas
-canvas = tk.Canvas(root, width=550, height=550, bg="white")
+canvas = tk.Canvas(root, width=550, height=550, bg="#ccffcc")
 canvas.pack(anchor=tk.CENTER, expand=True)
 
 SNAKE_SIZE = 20  # Define snake block size
@@ -95,6 +95,15 @@ def check_self_collision():
 def score():
     return len(snake_body) -1 
 
+def draw_grid():
+    for x in range(0, 550, SNAKE_SIZE):
+        for y in range(0, 550, SNAKE_SIZE):
+            color = "#c8f7c5" if (x // SNAKE_SIZE + y // SNAKE_SIZE) % 2 == 0 else "#b7eb8f"
+            canvas.create_rectangle(
+                x, y, x + SNAKE_SIZE, y + SNAKE_SIZE,
+                fill=color, outline=""
+            )
+
 def game_loop():
     global game_over
 
@@ -104,6 +113,7 @@ def game_loop():
         return
 
     canvas.delete("all")
+    draw_grid()
     move_snake()
     check_food_collision()
     check_wall_collision()
