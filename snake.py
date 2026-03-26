@@ -20,6 +20,8 @@ snake_body = [[60, 60]]
 grow_pending = False
 direction = "RIGHT"
 
+game_over = False
+
 food_x = random.randint(0, 27) * SNAKE_SIZE
 food_y = random.randint(0, 27) * SNAKE_SIZE
 
@@ -76,21 +78,31 @@ def check_food_collision():
         print(f"Score: {score()}")
 
 def check_wall_collision():
+    global game_over
     head_x, head_y = snake_body[0]
     if head_x < 0 or head_x >= 550 or head_y < 0 or head_y >= 550:
         print("Game Over! You hit the wall.")
-        root.destroy()
+        game_over = True
+
 
 def check_self_collision():
+    global game_over
     head = snake_body[0]
     if head in snake_body[1:]:
         print("Game Over! You hit yourself.")
-        root.destroy()
+        game_over = True
 
 def score():
     return len(snake_body) -1 
-    
+
 def game_loop():
+    global game_over
+
+    if game_over:
+        canvas.delete("all")
+        canvas.create_text(275, 275, text="GAME OVER", font=("Arial", 24))
+        return
+
     canvas.delete("all")
     move_snake()
     check_food_collision()
